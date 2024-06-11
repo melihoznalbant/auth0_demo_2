@@ -47,5 +47,18 @@
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use Face ID to authenticate</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+  		<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLName</key>
+    		<string>auth0</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+      			<string>com.example.auth0Demo2</string>
+    		</array>
+  		</dict>
+	</array>
 </dict>
 </plist>

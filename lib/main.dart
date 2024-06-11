@@ -48,6 +48,7 @@ class _FaceIdAuthScreenState extends State<FaceIdAuthScreen> with WidgetsBinding
     setState(() {
       _isAppInForeground = state == AppLifecycleState.resumed;
     });
+    super.didChangeAppLifecycleState(state);
   }
 
   Future<void> _authenticate() async {
@@ -72,10 +73,16 @@ class _FaceIdAuthScreenState extends State<FaceIdAuthScreen> with WidgetsBinding
         _errorMessage = 'Error during authentication: $e';
       });
     }
-
     if (authenticated) {
-      _getAuthToken();
+      _checkForegroundAndFetchToken();
     }
+  }
+
+  void _checkForegroundAndFetchToken() async {
+    while (!_isAppInForeground) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    await _getAuthToken();
   }
 
   Future<void> _getAuthToken() async {
@@ -95,15 +102,18 @@ class _FaceIdAuthScreenState extends State<FaceIdAuthScreen> with WidgetsBinding
       final result = await auth0.webAuthentication().login(
         audience: 'https://dev-72zrfykv3lzqt1a6.eu.auth0.com/api/v2/',
         scopes: {'openid', 'profile', 'email', 'offline_access'},
+        redirectUrl: 'com.example.auth0Demo2://dev-72zrfykv3lzqt1a6.eu.auth0.com/ios/com.example.auth0Demo2/callback',
       );
 
       setState(() {
         _authToken = result.accessToken!;
+        print("Access Token---- $_authToken");
       });
     } catch (e) {
       setState(() {
         _authToken = '';
         _errorMessage = 'Failed to get token: $e';
+        print("Error---- $e");
       });
     }
   }

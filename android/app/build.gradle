@@ -31,6 +31,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        kotlinOptions {
+            jvmTarget = '1.8'
+        }
     }
 
     defaultConfig {
@@ -42,6 +45,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        manifestPlaceholders += [auth0Domain: "<ev-72zrfykv3lzqt1a6.eu.auth0.com", auth0Scheme: "auth0_demo_2"]
     }
 
     buildTypes {
@@ -55,4 +59,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+  // Add the Auth0 Android SDK
+  implementation 'com.auth0.android:auth0:2.+'
 }
